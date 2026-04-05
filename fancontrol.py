@@ -316,6 +316,8 @@ class FanControlApp:
         save_config(cfg)
 
     def apply_preset(self, name, save=True):
+        if name not in PRESETS:
+            name = "Auto"
         data = PRESETS[name]
         for n, btn in self.preset_btns.items():
             btn.config(bg=data["color"] if n == name else CARD,
