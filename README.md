@@ -125,7 +125,8 @@ Or search **Fan Control** in your app menu.
 ## Notes
 
 - **GPU fan** is locked by NVIDIA on laptop GPUs — cannot be controlled on Linux
-- Set GPU fan curve from Windows once — settings persist in EC when booting Linux
+- **Keyboard RGB** requires HP OMEN Command Center (Windows only)
+- Set GPU fan curve and keyboard RGB from Windows once — settings persist in EC when booting Linux
 
 ---
 
