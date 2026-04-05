@@ -31,9 +31,10 @@ Should work on other HP OMEN models — your mileage may vary.
 - Clean dark-themed GUI — no terminal needed after setup
 
 ---
-<img width="376" height="566" alt="image" src="https://github.com/user-attachments/assets/000f9a13-2535-41be-801c-f696d4030a99" />
+<img width="361" height="553" alt="image" src="https://github.com/user-attachments/assets/f97380e8-a725-4836-90ad-3521b1f4d0a0" />
 
-<img width="365" height="392" alt="image" src="https://github.com/user-attachments/assets/3d73676d-d5a6-455b-b0c2-1b326de8d9dc" />
+
+<img width="357" height="381" alt="image" src="https://github.com/user-attachments/assets/c91abd30-702b-45cd-82f7-58f323152c48" />
 
 
 ## Download
