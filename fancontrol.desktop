@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Fan Control
 Comment=Control CPU fan speed
-Exec=bash -c 'sudo /usr/local/bin/nbfc start 2>/dev/null; sudo python3 /home/Thors/fancontrol.py'
+Exec=/usr/bin/python3 /home/Thors/hp-omen-fan-control/fancontrol.py
 Icon=/home/Thors/.local/share/icons/fancontrol.svg
 Terminal=false
 Type=Application
