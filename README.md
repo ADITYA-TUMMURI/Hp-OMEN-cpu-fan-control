@@ -1,170 +1,140 @@
 # HP OMEN CPU Fan Control for Linux
 
-A lightweight GUI app to control the CPU fan on HP OMEN laptops running Linux.
+A lightweight fan-control utility for **HP OMEN laptops on Linux** with a clean GUI, live temperatures, presets, and a custom automatic fan curve.
 
-Built with `nbfc-linux` for fan control and Python `tkinter` for the interface.
+Built with **Python + Tkinter** for the interface and **nbfc-linux** for embedded controller fan control.
 
-![Python](https://img.shields.io/badge/Python-3.x-blue) ![License](https://img.shields.io/badge/License-MIT-green) ![Platform](https://img.shields.io/badge/Platform-Linux-orange)
-
----
-
-## Tested On
-
-- **Laptop:** HP OMEN 16 (16-xd0xxx)
-- **CPU:** AMD Ryzen 7 7840HS
-- **GPU:** NVIDIA RTX 4050 Laptop
-- **OS:** Fedora 43 XFCE
-
-Should work on other HP OMEN models — your mileage may vary.
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![Linux](https://img.shields.io/badge/Platform-Linux-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## Features
+## ✨ Features
 
-- Live CPU and GPU temperature display (color coded)
-- **Presets** — Silent, Balanced, Performance, Auto
-- **Auto curve** — automatically adjusts fan speed based on CPU temperature
-- **Curve editor** — drag points on a graph to set your own temp→speed curve
-- Manual fan speed slider (0–100%)
-- Settings saved across reboots
-- System tray support (optional)
-- Clean dark-themed GUI — no terminal needed after setup
-
----
-<img width="361" height="553" alt="image" src="https://github.com/user-attachments/assets/f97380e8-a725-4836-90ad-3521b1f4d0a0" />
-
-
-<img width="357" height="381" alt="image" src="https://github.com/user-attachments/assets/c91abd30-702b-45cd-82f7-58f323152c48" />
-
-
-## Download
-
-**[⬇ Download the latest version](https://github.com/ADITYA-TUMMURI/Hp-OMEN-cpu-fan-control/archive/refs/heads/main.zip)**
-
-Or clone with git:
-
-```bash
-git clone https://github.com/ADITYA-TUMMURI/Hp-OMEN-cpu-fan-control.git
-cd Hp-OMEN-cpu-fan-control
-```
+- 🌡 **Live CPU & GPU temperature monitoring**
+- 🎚 **One-click presets**
+  - Silent
+  - Balanced
+  - Performance
+  - Auto Curve
+- 📈 **Custom fan curve editor**
+  - Drag points on graph
+  - Temperature → Fan Speed mapping
+- 🎛 **Manual fan speed control**
+- 💾 Settings saved automatically
+- 🖥 **System tray support**
+- 🌙 Clean dark UI
+- 🔁 Restores native auto mode when app exits
 
 ---
 
-## Installation
+## 🧪 Tested On
 
-### Quick Install (recommended)
+| Component | Details |
+|---|---|
+| Laptop | HP OMEN 16 (16-xd0xxx) |
+| CPU | AMD Ryzen 7 7840HS |
+| GPU | NVIDIA RTX 4050 Laptop |
+| OS | Fedora 43 XFCE |
+
+Should work on other HP OMEN models, but results may vary.
+
+---
+
+## 📸 Screenshots
+
+<img width="361" height="553" alt="Main UI" src="https://github.com/user-attachments/assets/f97380e8-a725-4836-90ad-3521b1f4d0a0" />
+
+<img width="357" height="381" alt="Curve Editor" src="https://github.com/user-attachments/assets/c91abd30-702b-45cd-82f7-58f323152c48" />
+
+---
+
+## ⚡ Quick Install (Fedora)
 
 ```bash
 git clone https://github.com/ADITYA-TUMMURI/Hp-OMEN-cpu-fan-control.git
 cd Hp-OMEN-cpu-fan-control
 chmod +x install.sh
 ./install.sh
-```
-
-That's it. The script handles everything automatically.
-
----
-
-### Manual Install
-
-**1. Install dependencies**
-
-```bash
+🛠 Manual Installation
+1. Install Dependencies
 sudo dnf install -y git cmake autoconf automake libtool libcurl-devel \
-    openssl-devel python3-tkinter acpica-tools dkms kernel-devel
-```
-
-**2. Build nbfc-linux**
-
-```bash
+openssl-devel python3-tkinter acpica-tools dkms kernel-devel
+2. Build NBFC
 git clone https://github.com/nbfc-linux/nbfc-linux.git
-cd nbfc-linux && ./autogen.sh && ./configure
-make -j$(nproc) && sudo make install
-cd ~
-```
-
-**3. Install acpi_call module**
-
-```bash
-git clone https://github.com/nix-community/acpi_call.git
-cd acpi_call && sudo make && sudo make install
-sudo modprobe acpi_call
-cd ~
-```
-
-**4. Configure nbfc for your laptop**
-
-```bash
+cd nbfc-linux
+./autogen.sh
+./configure
+make -j$(nproc)
+sudo make install
+3. Start NBFC Service
+sudo systemctl enable --now nbfc_service
+4. Apply Recommended Config
 sudo nbfc rate-config -a
 sudo nbfc config --apply "HP 15 Notebook PC"
-sudo nbfc start
-```
+5. Run App
+/usr/bin/python3 fancontrol.py
+▶ Launch From Menu
 
-**5. Auto-start nbfc on boot**
+If installed through script, search:
 
-```bash
-echo 'sudo nbfc start' | sudo tee /etc/rc.d/rc.local
-sudo chmod +x /etc/rc.d/rc.local
-```
+Fan Control
 
-**6. Set up the app**
+Or run manually:
 
-```bash
-mkdir -p ~/.local/share/icons
-cp fancontrol.svg ~/.local/share/icons/fancontrol.svg
-cp fancontrol.desktop ~/.local/share/applications/
-cp fancontrol.py ~/fancontrol.py
-```
+/usr/bin/python3 ~/hp-omen-fan-control/fancontrol.py
+🧠 How Auto Modes Work
+Native Auto Mode
 
-**7. Allow passwordless sudo for nbfc**
+Uses laptop firmware / NBFC automatic control.
 
-```bash
-sudo visudo -f /etc/sudoers.d/fancontrol
-```
+App Auto Curve
 
-Add (replace `yourusername`):
-```
-yourusername ALL=(ALL) NOPASSWD: ALL
-```
+Uses your custom curve while app is open or minimized.
 
-**8. Run the app**
+When the app closes, native auto mode is restored automatically.
 
-```bash
-sudo python3 ~/fancontrol.py
-```
+📋 Usage
+Action	Result
+Silent	Low noise
+Balanced	Daily use
+Performance	Max cooling
+Auto	Custom dynamic curve
+Manual Slider	Fixed speed
+⚠ Important Notes
+This project currently controls the CPU fan on supported systems.
+On many OMEN laptops, the GPU fan remains firmware-controlled.
+Fan control support depends on EC compatibility.
+Always monitor temperatures after applying custom settings.
+🔧 Troubleshooting
+App does not open
 
-Or search **Fan Control** in your app menu.
+Use system Python:
 
----
+/usr/bin/python3 fancontrol.py
+tkinter error
 
-## Optional — System Tray Support
+Install:
 
-```bash
-pip install pystray pillow --break-system-packages
-```
+sudo dnf install python3-tkinter
+NBFC socket error
 
-Once installed, closing the window minimizes to tray instead of quitting.
+Start service:
 
----
+sudo systemctl enable --now nbfc_service
+Check status
+sudo nbfc status
+🚀 Roadmap
+Dual-fan support (if EC allows)
+Better distro installers
+Notifications
+RPM package
+Wayland tray improvements
+🤝 Contributing
 
-## Usage
+Pull requests, fixes, and model compatibility reports are welcome.
 
-| Action | How |
-|---|---|
-| Quick presets | Click Silent / Balanced / Performance / Auto |
-| Auto fan curve | Click **Auto** — fan adjusts based on temperature automatically |
-| Edit curve | Click **✎ CURVE** — drag points on the graph |
-| Manual speed | Adjust slider → click **Apply Manual** |
+📄 License
 
----
-
-## Notes
-
-- **GPU fan** is locked by NVIDIA on all laptop GPUs — cannot be controlled on Linux
-- Install script uses `dnf` (Fedora/RHEL). On Ubuntu/Debian replace `dnf` with `apt`, on Arch use `pacman`
-
----
-
-## License
-
-MIT
+MIT License
