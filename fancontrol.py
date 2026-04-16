@@ -393,17 +393,26 @@ class FanControlApp:
         self.root.after(0, self.root.deiconify)
 
     def quit_app(self):
-        if TRAY_AVAILABLE: self.tray.stop()
+        run("sudo nbfc set --auto")
+        if TRAY_AVAILABLE:
+            self.tray.stop()
         self.root.after(0, lambda: (self.root.destroy(), exit(0)))
-
 
 if __name__ == "__main__":
     if not TRAY_AVAILABLE:
         print("Tip: pip install pystray pillow --break-system-packages")
+
     root = tk.Tk()
     root.geometry("360x530")
     app = FanControlApp(root)
-    root.protocol("WM_DELETE_WINDOW", lambda: (
-        app.hide_to_tray() if TRAY_AVAILABLE else (root.destroy(), exit(0))
-    ))
+
+    def on_close():
+        run("sudo nbfc set --auto")
+        if TRAY_AVAILABLE:
+            app.hide_to_tray()
+        else:
+            root.destroy()
+            exit(0)
+
+    root.protocol("WM_DELETE_WINDOW", on_close)
     root.mainloop()
